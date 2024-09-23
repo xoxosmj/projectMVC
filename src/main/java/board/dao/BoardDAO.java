@@ -77,17 +77,3 @@ public class BoardDAO {
         sqlSession.close();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
