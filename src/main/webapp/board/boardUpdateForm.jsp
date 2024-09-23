@@ -15,7 +15,7 @@
             padding: 5px;
         }
 
-        #boardWriteForm {
+        #boardUpdateForm {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,7 +23,7 @@
             text-align: left;
         }
 
-        #boardWriteForm div {
+        #boardUpdateForm div {
             color: red;
             font-size: 8pt;
             font-weight: bold;
@@ -48,26 +48,29 @@
         <jsp:include page="../main/boardMenu.jsp"/>
 
         <div id="section">
-            <form id="boardWriteForm">
+            <form id="boardUpdateForm">
+
+                <input type="hidden" id="seq" value="${boardDTO.seq }"/>
+                <input type="hidden" id="pg" value="${pg }"/>
 
                 <table border="1">
                     <tr>
                         <th width="100">제목</th>
                         <td>
-                            <input type="text" id="subject" name="subject" size="50" placeholder="제목 입력">
+                            <input type="text" id="subject" name="subject" size="50" value="${boardDTO.subject}" placeholder="제목 입력">
                             <div id="subjectDiv"></div>
                         </td>
                     </tr>
                     <tr>
                         <th>내용</th>
                         <td>
-                            <textarea id="content" name="content" rows="15" cols="50" placeholder="내용 입력"></textarea>
+                            <textarea id="content" name="content" rows="15" cols="50" placeholder="내용 입력">${boardDTO.content}</textarea>
                             <div id="contentDiv"></div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <input type="button" value="글쓰기" id="boardWriteBtn">
+                            <input type="button" value="글수정" id="boardUpdateBtn">
                             <input type="reset" value="다시작성">
                         </td>
                     </tr>
@@ -78,7 +81,37 @@
 </div> <!-- id="wrap" -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="../js/boardWrite.js"></script>
+<script type="text/javascript">
+     $('#boardUpdateBtn').click(function(){
+            $('#subjectDiv').empty();
+            $('#contentDiv').empty();
+
+            if($('#subject').val() == '')
+                $('#subjectDiv').html('제목 입력');
+
+            else if($('#content').val() == '')
+                $('#contentDiv').html('내용 입력');
+
+            else
+                $.ajax({
+                    type: 'post',
+                    url: '/projectMVC/board/boardUpdate.do',
+                    data: {
+                        'seq' : $('#seq').val(),
+                        'subject': $('#subject').val(),
+                        'content': $('#content').val()
+                    },
+                    success: function(){
+                        alert("글수정 완료");
+                        location.href = "/projectMVC/board/boardList.do?pg=" + $('#pg').val();
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                });
+    });
+
+</script>
 </body>
 </html>
 

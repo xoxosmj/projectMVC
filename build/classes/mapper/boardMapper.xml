@@ -39,6 +39,19 @@
 		select * from board where seq=#{seq}
 
 	</select>
+
+	<!-- 글 수정 -->
+	<update id="boardUpdate" parameterType="java.util.Map" >
+		update board set subject=#{subject},content=#{content},logtime=sysdate
+		where seq=#{seq}
+	</update>
+
+	<!-- 조회수 -->
+	<update id="hitUpdate" parameterType="int" >
+	update board set hit = hit+1 where seq=#{seq}
+	</update>
+
+
 </mapper>
 
 
