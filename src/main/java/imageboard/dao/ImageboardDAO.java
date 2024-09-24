@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
+import java.util.Map;
 
 public class ImageboardDAO {
 
@@ -38,4 +40,23 @@ public class ImageboardDAO {
 
 
     }
+
+
+    public List<ImageboardDTO> imageboardList(Map<String, Integer> map) {
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<ImageboardDTO> list = sqlSession.selectList("imageboardSQL.imageboardList", map);
+        sqlSession.close();
+        return list;
+
+    }
+
+    public int getTotalA() {
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int totalA = sqlSession.selectOne("imageboardSQL.getTotalA");
+        sqlSession.close();
+        return totalA;
+    }
+
 }
