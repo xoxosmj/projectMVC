@@ -35,7 +35,7 @@
         				 , #{zipcode}
         				 , #{addr1}
         				 , #{addr2}
-        				 , SYSDATE)
+        				 , Now())
 	</insert>
 	
 	<!-- 로그인 -->
@@ -61,7 +61,7 @@
 			            , zipcode = #{zipcode}
 			            , addr1 = #{addr1}
 			            , addr2 = #{addr2}
-			            , logtime = sysdate where id = #{id}
+			            , logtime = now() where id = #{id}
 	</update>
 </mapper>
 

@@ -39,6 +39,7 @@ public class BoardDAO {
     public void boardWrite(Map<String, String> map) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         sqlSession.insert("boardSQL.boardWrite", map);
+        sqlSession.update("boardSQL.refUpdate");
         sqlSession.commit();
         sqlSession.close();
     }

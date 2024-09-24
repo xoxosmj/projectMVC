@@ -20,9 +20,16 @@ public class BoardListService implements CommandProcess {
 		if(request.getParameter("pg") != null) pg = Integer.parseInt(request.getParameter("pg"));
 		
 		//1페이지당 5개씩
+		/*
+		//오라클
 		int endNum = pg * 5;
 		int startNum = endNum - 4;
-		
+		*/
+
+		//MySQL
+		int endNum = 5; // 개수
+		int startNum = pg*endNum -endNum; //시작위치, 0부터 시작 - 0,5,10
+
 		//DB
 		BoardDAO boardDAO = BoardDAO.getInstance();
 		List<BoardDTO> list = boardDAO.boardList(startNum, endNum);
