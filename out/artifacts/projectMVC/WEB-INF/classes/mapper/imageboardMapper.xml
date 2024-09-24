@@ -6,24 +6,41 @@
 
     <!-- 이미지 등록 -->
     <insert id="imageboardWrite" parameterType="imageboard">
-        insert into imageboard values(seq_imageboard.nextval
-        , #{imageId}
-        , #{imageName}
-        , #{imagePrice}
-        , #{imageQty}
-        , #{imageContent}
-        , #{image1}
-        , sysdate)
+        insert into imageboard (
+        imageId,
+        imageName,
+        imagePrice,
+        imageQty,
+        imageContent,
+        image1,
+        logtime
+        ) values (
+        #{imageId},
+        #{imageName},
+        #{imagePrice},
+        #{imageQty},
+        #{imageContent},
+        #{image1},
+        now()
+        )
     </insert>
 
     <!-- 이미지 목록 -->
     <select id="imageboardList" parameterType="java.util.Map" resultType="imageboard">
         <![CDATA[
-			select * from
-			(select rownum rn, tt.* from
-			(select * from imageboard order by seq desc)tt
-			)where rn >= #{startNum} and rn <= #{endNum}
-		]]>
+        select *
+        from (
+            select
+                @rownum := @rownum + 1 AS rn,  -- 행 번호 생성
+                tt.*
+            from (
+                select *
+                from imageboard
+                order by seq desc
+            ) tt, (SELECT @rownum := 0) r  -- @rownum 변수 초기화
+        ) t  -- 바깥쪽 서브쿼리에도 별칭 't' 지정
+        where rn >= #{startNum} and rn <= #{endNum}
+    ]]>
     </select>
 
     <!-- 총글수 -->
